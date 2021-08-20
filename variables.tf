@@ -1,15 +1,7 @@
-variable "region" {
-  description = "AWS region"
-  default     = "us-west-1"
+variable "prefix" {
+  description = "The prefix used for all resources in this example"
 }
 
-variable "instance_type" {
-  description = "Type of EC2 instance to provision"
-  default     = "t2.micro"
+variable "location" {
+  description = "The Azure location where all resources in this example should be created"
 }
-
-variable "instance_name" {
-  description = "EC2 instance name"
-  default     = "Provisioned by Terraform"
-}
-

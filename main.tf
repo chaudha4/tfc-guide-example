@@ -1,28 +1,31 @@
-provider "aws" {
-  region = var.region
+provider "azurerm" {
+  features {}
+
+  # More information on the authentication methods supported by
+  # the AzureRM Provider can be found here:
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+
+  # subscription_id = "..."
+  # client_id       = "..."
+  # client_secret   = "..."
+  # tenant_id       = "..."
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
+resource "azurerm_resource_group" "example" {
+  name     = "${var.prefix}-resources"
+  location = "${var.location}"
 }
 
-resource "aws_instance" "ubuntu" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
+resource "azurerm_virtual_network" "example" {
+  name                = "${var.prefix}-network"
+  resource_group_name = "${azurerm_resource_group.example.name}"
+  location            = "${azurerm_resource_group.example.location}"
+  address_space       = ["10.0.0.0/16"]
+}
 
-  tags = {
-    Name = var.instance_name
-  }
+resource "azurerm_subnet" "example" {
+  name                 = "internal"
+  virtual_network_name = "${azurerm_virtual_network.example.name}"
+  resource_group_name  = "${azurerm_resource_group.example.name}"
+  address_prefixes     = ["10.0.1.0/24"]
 }
