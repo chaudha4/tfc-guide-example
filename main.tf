@@ -5,10 +5,12 @@ provider "azurerm" {
   # the AzureRM Provider can be found here:
   # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
-  #subscription_id = "${env.ARM_SUBSCRIPTION_ID}"
-  #client_id       = "${env.ARM_CLIENT_ID}"
-  #client_secret   = "${env.ARM_CLIENT_SECRET}"
-  #tenant_id       = "${env.ARM_TENANT_ID}"
+  # You need to provide the following if your envirnment does not have
+  # these set. Normally you will provide these in the terraform cloud, not here.
+  #subscription_id = "."
+  #client_id       = "."
+  #client_secret   = "."
+  #tenant_id       = "."
 }
 
 resource "azurerm_resource_group" "example" {
